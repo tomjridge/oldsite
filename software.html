@@ -1,0 +1,151 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Software</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  
+  Categories: <a href='category_software.html'>software</a></br>
+  <br/>
+
+  <h1 id="software">Software</h1>
+<h2 id="software-on-github">Software on github</h2>
+<p>See <a href="https://github.com/tomjridge" class="uri">https://github.com/tomjridge</a>. Some repositories of interest (in roughly chronological order):</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Title and link</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/PeterSewell/netsem/">Netsem</a></td>
+<td>The Netsem TCP/IP specification</td>
+</tr>
+<tr class="even">
+<td><a href="http://www.cl.cam.ac.uk/~pes20/ott/">Ott</a></td>
+<td>“Ott is a tool for writing definitions of programming languages and calculi.”</td>
+</tr>
+<tr class="odd">
+<td><a href="http://www.cl.cam.ac.uk/~pes20/lem/">Lem</a></td>
+<td>“Lem is a lightweight tool for writing, managing, and publishing large scale semantic definitions.”</td>
+</tr>
+<tr class="even">
+<td><a href="/sibylfs.html">SibylFS</a></td>
+<td>A formal specification and test oracle for file systems.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/tomjridge/tjr_btree">tjr_btree</a></td>
+<td>A B-tree library for OCaml (and JavaScript).</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/tomjridge/tjr_kv">tjr_kv</a></td>
+<td>A key-value store for OCaml (and JavaScript).</td>
+</tr>
+</tbody>
+</table>
+<p>Some of these use travis, see <a href="https://travis-ci.org/tomjridge">here</a> for build statuses.</p>
+<p>NOTE: JavaScript versions via js-of-ocaml</p>
+<h2 id="parsing">Parsing</h2>
+<p>See the separate page <a href="parsing.html">parsing</a>.</p>
+<p>Verified parser: see the <a href="2011-12-01_verified_parsing.html">blog article</a>.</p>
+<h2 id="older-stuff">Older stuff</h2>
+<ul>
+<li>Verified theorem prover. Available at the Archive of Formal Proofs, <a href="http://afp.sourceforge.net/entries/Verified-Prover.shtml">here</a></li>
+<li>Various Isabelle/HOL formalizations available at the <a href="http://afp.sourceforge.net/">Archive of Formal Proofs</a></li>
+</ul>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2020-05-22_simple_mcq_program.html'>2020-05-22 A simple MCQ test program, in OCaml, compiled to JavaScript</a></li>
+<li><a href='2019-08-30_btree_performance.html'>2019-08-30 B-tree random write performance</a></li>
+<li><a href='2019-08-21_ml_workshop_kv_store_for_ocaml.html'>2019-08-21 ML'19 Workshop at ICFP: A key-value store for OCaml</a></li>
+<li><a href='2018-07-09_backup_tools.html'>2018-07-09 Backup tools</a></li>
+<li><a href='2018-02-01_path_resolution.html'>2018-02-01 New OCaml library: path resolution</a></li>
+<li><a href='2017-11-14_tjr_simple_earley.html'>2017-11-14 New OCaml parsing algorithm: tjr_simple_earley</a></li>
+<li><a href='2017-09-17_p0_and_tjr_csv.html'>2017-09-17 Two new OCaml libraries: P0 and tjr-csv</a></li>
+<li><a href='2017-03-16_tjr_btree.html'>2017-03-16 tjr-btree: a CoW B-tree library in OCaml</a></li>
+<li><a href='2016-11-17_ocaml_string_functions.html'>2016-11-17 OCaml string functions</a></li>
+<li><a href='2016-02-19_tree-structured_text.html'>2016-02-19 Tree-structured text</a></li>
+<li><a href='2016-02-09_simple_implementation_of_an_earley-like_parsing_algorithm.html'>2016-02-09 Simple implementation of an Earley-like parsing algorithm</a></li>
+<li><a href='2015-06-26_p5_scala_parsing_library.html'>2015-06-26 P5 scala parsing library</a></li>
+<li><a href='2014-11-21_talk_on_parsing_at_the_university_of_sussex.html'>2014-11-21 Talk on parsing at the University of Sussex</a></li>
+<li><a href='2014-09-26_p1_combinator_parsing_library_for_ocaml.html'>2014-09-26 P1 combinator parsing library for OCaml</a></li>
+<li><a href='2014-09-26_e3_earley_parser_library_for_ocaml.html'>2014-09-26 E3 earley parser library for OCaml</a></li>
+<li><a href='2014-04-15_new_release_of_p3_code_on_github.html'>2014-04-15 New release of P3 code on github</a></li>
+<li><a href='2014-03-02_new_release_of_p3_code_on_github.html'>2014-03-02 New release of P3 code on github</a></li>
+<li><a href='2013-12-16_new_release_of_p3_code_on_github.html'>2013-12-16 New release of P3 code on github</a></li>
+<li><a href='2013-11-24_experience_of_using_lem.html'>2013-11-24 Experience of using Lem</a></li>
+<li><a href='2011-12-01_verified_parsing.html'>2011-12-01 Verified parsing</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Experience of using Lem</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  Date: 2013-11-24<br/>
+  Categories: <a href='category_lem.html'>lem</a>; <a href='category_news.html'>news</a>; <a href='category_software.html'>software</a></br>
+  <br/>
+
+  <!-- 
+{"date":"2013-11-24","title":"Experience of using Lem","id":"id:2013-11-24","time":"2013-11-24","cats":["lem","news","software"]} 
+-->
+<h1 id="experience-of-using-lem">Experience of using Lem</h1>
+<p>
+Recently I had occasion to use <a
+href='http://www.cs.kent.ac.uk/~sao/lem/'>Lem</a>. Lem is a specification tool. To a first approximation, it provides the ability to specify systems using a syntax similar to OCaml, but with added capabilities to handle logical constructs. I ported the <a
+href='http://www.cl.cam.ac.uk/~pes20/Netsem/'>Netsem</a> TCP/IP <a
+href='https://github.com/PeterSewell/netsem/'>specification</a> from HOL to Lem. The following are my thoughts.
+</p>
+<p>
+Currently, when writing a formal specification, one chooses a theorem prover such as HOL, Isabelle or Coq, and one starts to write using that particular tool. The resulting specification usually never escapes the initial tool. Lem offers the possibility of a single source specification which is then translated to the different dialects used by the main theorem provers.
+</p>
+<p>
+<p>Why would you want a specification to be usable in another tool? Many possible reasons.</p>
+<ul>
+<li>
+typically you want to use tool features that are not present in your initial tool
+</li>
+<li>
+or you want others to work on the specification (but they do not want to learn your initial tool)
+</li>
+<li>
+or you want to prove some results in a particular theorem prover (because the libraries are better, or something)
+</li>
+<li>
+or perhaps your initial tool is dying, and you really value the specification, and want to preserve it by making it available to other provers
+</li>
+</ul>
+</p>
+<p>
+Assuming you want your spec to be available in other tools, you don't have to use Lem. For example, if your spec is small, just rewrite it in the other tool. This gets costly if the initial spec keeps changing, or is not so small. It is also costly if you want to support many different provers. At this point, people usually resort to writing a parser for the language of their initial tool, and a pretty-printer for the new tool. For example, I have quite a few tools (most unmaintained) called things like &quot;ocaml-to-isabelle&quot;, &quot;ocaml-to-hol&quot;, &quot;isabelle-to-hol&quot; etc. This is all quite painful.
+</p>
+<p>
+Lem offers an alternative. The syntax of Lem is similar in many ways to that of HOL, Isabelle and OCaml (I don't know Coq so well, but maybe it is also similar to Coq). You write the specification once in Lem, and then Lem will generate different versions of the specification in the different tools. This is extremely useful.
+</p>
+<p>
+Lem is also a reasonably pleasant tool to use to write a specification. Although it doesn't have an interactive REPL, it is amazingly fast to process Lem specifications. For example, the Netsem TCP/IP spec is processed by Lem in a few seconds or so (essentially this involves parsing and type-checking the specification). It takes HOL much longer to process the HOL version of the spec. Of course, Lem is doing a lot less than HOL, but for the most part, when developing a spec, one wants a rapid turn around. When the spec has settled, then one can wait for HOL to dot the &quot;i&quot;s and cross the &quot;t&quot;s.
+</p>
+<p>
+Lem also has some nice features such as type-classes. However, the main benefits of Lem are surely that it allows a specification to be ported easily to other theorem provers, and that it can process specifications relatively quickly when compared to existing tools such as HOL. I intend to use Lem for my next few specifications (including the filesystem spec that I am currently working on).
+</p>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2020-05-22_simple_mcq_program.html'>2020-05-22 A simple MCQ test program, in OCaml, compiled to JavaScript</a></li>
+<li><a href='2019-08-30_btree_performance.html'>2019-08-30 B-tree random write performance</a></li>
+<li><a href='2019-08-21_ml_workshop_kv_store_for_ocaml.html'>2019-08-21 ML'19 Workshop at ICFP: A key-value store for OCaml</a></li>
+<li><a href='2018-07-09_backup_tools.html'>2018-07-09 Backup tools</a></li>
+<li><a href='2018-07-02_funded_phd_places.html'>2018-07-02 Funded PhD places</a></li>
+<li><a href='2018-02-01_path_resolution.html'>2018-02-01 New OCaml library: path resolution</a></li>
+<li><a href='2017-11-14_tjr_simple_earley.html'>2017-11-14 New OCaml parsing algorithm: tjr_simple_earley</a></li>
+<li><a href='2017-09-17_p0_and_tjr_csv.html'>2017-09-17 Two new OCaml libraries: P0 and tjr-csv</a></li>
+<li><a href='2017-09-06_icfp_most_influential.html'>2017-09-06 ICFP most influential paper from 10 years ago</a></li>
+<li><a href='2017-03-16_tjr_btree.html'>2017-03-16 tjr-btree: a CoW B-tree library in OCaml</a></li>
+<li><a href='2016-11-17_ocaml_string_functions.html'>2016-11-17 OCaml string functions</a></li>
+<li><a href='2016-06-05_do_not_buy_tp-link_products.html'>2016-06-05 Do not buy TP-Link products</a></li>
+<li><a href='2016-05-27_visit_to_cambridge__for_rems_workshop.html'>2016-05-27 Visit to Cambridge, for REMS workshop</a></li>
+<li><a href='2016-04-22_visit_to_denmark__to_see_joergen_villadsen.html'>2016-04-22 Visit to Denmark, to see Joergen Villadsen</a></li>
+<li><a href='2016-02-19_tree-structured_text.html'>2016-02-19 Tree-structured text</a></li>
+<li><a href='2016-02-09_simple_implementation_of_an_earley-like_parsing_algorithm.html'>2016-02-09 Simple implementation of an Earley-like parsing algorithm</a></li>
+<li><a href='2016-01-27_talk_at_york_university.html'>2016-01-27 Talk at York University</a></li>
+<li><a href='2016-01-06_stephanie_heintz_phd_viva.html'>2016-01-06 Stephanie Heintz PhD viva</a></li>
+<li><a href='2015-10-05_sibylfs_presentation_at_sosp_15.html'>2015-10-05 SibylFS presentation at SOSP'15</a></li>
+<li><a href='2015-09-28_sibylfs_sosp_poster.html'>2015-09-28 SibylFS SOSP poster</a></li>
+<li><a href='2015-09-21_sibylfs_presentation_to_industrial_advisory_board.html'>2015-09-21 SibylFS presentation to Industrial Advisory Board</a></li>
+<li><a href='2015-06-28_sosp_2015_paper_acceptance_for_sibylfs.html'>2015-06-28 SOSP 2015 paper acceptance for SibylFS</a></li>
+<li><a href='2015-06-26_p5_scala_parsing_library.html'>2015-06-26 P5 scala parsing library</a></li>
+<li><a href='2015-04-21_rems_cambridge_talk_on_sibylfs.html'>2015-04-21 REMS Cambridge talk on SibylFS</a></li>
+<li><a href='2014-11-21_talk_on_parsing_at_the_university_of_sussex.html'>2014-11-21 Talk on parsing at the University of Sussex</a></li>
+<li><a href='2014-09-26_p1_combinator_parsing_library_for_ocaml.html'>2014-09-26 P1 combinator parsing library for OCaml</a></li>
+<li><a href='2014-09-26_e3_earley_parser_library_for_ocaml.html'>2014-09-26 E3 earley parser library for OCaml</a></li>
+<li><a href='2014-09-18_sle_2014_conference__and_parsing_at_sle_workshop__slides.html'>2014-09-18 SLE 2014 conference, and Parsing at SLE workshop, slides</a></li>
+<li><a href='2014-09-07_icfp_2014__ocaml_workshop__slides_and_video.html'>2014-09-07 ICFP 2014, OCaml workshop, slides and video</a></li>
+<li><a href='2014-09-07_icfp_2014__lem_talk.html'>2014-09-07 ICFP 2014, Lem talk</a></li>
+<li><a href='2014-07-11_p3_paper_accepted_for_sle_2014.html'>2014-07-11 P3 paper accepted for SLE 2014</a></li>
+<li><a href='2014-07-11_lem_paper_accepted_to_icfp_2014.html'>2014-07-11 Lem paper accepted to ICFP 2014</a></li>
+<li><a href='2014-04-15_new_release_of_p3_code_on_github.html'>2014-04-15 New release of P3 code on github</a></li>
+<li><a href='2014-03-02_new_release_of_p3_code_on_github.html'>2014-03-02 New release of P3 code on github</a></li>
+<li><a href='2013-12-16_new_release_of_p3_code_on_github.html'>2013-12-16 New release of P3 code on github</a></li>
+<li><a href='2013-12-03_implementing_algorithms_efficiently.html'>2013-12-03 Implementing algorithms efficiently</a></li>
+<li><a href='2013-11-24_experience_of_using_lem.html'>2013-11-24 Experience of using Lem</a></li>
+<li><a href='2013-11-13_phd_student_course_on_logic__proof_and_mechanized_theorem_proving.html'>2013-11-13 PhD student course on logic, proof and mechanized theorem proving</a></li>
+<li><a href='2013-11-13_new_website_design.html'>2013-11-13 New website design</a></li>
+<li><a href='2013-11-13_engineer_position.html'>2013-11-13 Engineer position</a></li>
+<li><a href='2013-11-12_netsem_tcp_ip_specification_on_github.html'>2013-11-12 Netsem TCP/IP specification on github</a></li>
+<li><a href='2013-11-08_talk_on_parsing_and_p3_given_at_cambridge.html'>2013-11-08 Talk on parsing and P3 given at Cambridge</a></li>
+<li><a href='2013-11-01_funded_phd_positions.html'>2013-11-01 Funded PhD positions</a></li>
+<li><a href='2013-04-01_phd_position_funded_by_microsoft_research.html'>2013-04-01 PhD position funded by Microsoft Research</a></li>
+<li><a href='2013-02-01_epsrc_grant_funded.html'>2013-02-01 EPSRC grant funded</a></li>
+<li><a href='2011-12-01_verified_parsing.html'>2011-12-01 Verified parsing</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

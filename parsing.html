@@ -1,0 +1,151 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Parsing</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  
+  Categories: <a href='category_parsing.html'>parsing</a></br>
+  <br/>
+
+  <h1 id="parsing">Parsing</h1>
+<h2 id="introduction">Introduction</h2>
+<p>I have been interested in various aspects of parsing since 2009. My research is particularly focused on parsing general context-free grammars, using combinator parsers. I have published several papers, formalized various proofs about parsers in the HOL4 theorem prover, and produced quite a few OCaml implementations to try out various ideas.</p>
+<ul>
+<li><p><a href="https://github.com/tomjridge/p0">P0</a> is a very simple combinator library, a sort-of minimal basis for combinator parsing.</p></li>
+<li><p><a href="https://github.com/tomjridge/p1">P1</a> is a combinator parsing library for all context-free grammars (CFGs). It resembles traditional combinator-parsing libraries (both in interface, and in performance) with the additional feature that it can handle arbitrary CFGs. The performance with highly ambiguous left-recursive grammars is not optimal, but can be surprisingly good. For example, on the grammar <code>E -&gt; E E E | "1" | eps</code>, P1 outperforms the Haskell Happy parser generator. The implementation is based on the verified parsing work (see below).</p></li>
+<li><p><a href="https://github.com/tomjridge/tjr_simple_earley">tjr_simple_earley</a> is my current favourite Earley parser implementation (in OCaml). A Python version is also available from github.</p></li>
+<li><p>Example grammars are <a href="https://github.com/tomjridge/example_grammars/">here</a> ; see also the <a href="2014-12-04_parsing_examples.html">blog post</a></p></li>
+</ul>
+<hr />
+<h2 id="verified-parsing">Verified parsing</h2>
+<p>This work produced a verified, sound and complete approach to combinator parsing. This introduced the idea of “good parse trees”. The problem with this approach is that it is too inefficient with left-recursive grammars. There is a post describing verified parsing <a href="2011-12-01_verified_parsing.html">here</a>.</p>
+<hr />
+<h2 id="deprecated">Deprecated</h2>
+<p>These are projects which I have largely abandoned:</p>
+<ul>
+<li><p>P3 is a combinator parsing library that can parse all CFGs, whilst offering <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> performance (which I consider optimal for real-world usage: there are approaches that can do better than <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span>, but the real-world overhead is currently unacceptable, and the implementation complexity is high).</p></li>
+<li><p>E3 is an Earley parser which is used by P3.</p></li>
+<li><p>P4 is a combinator parsing library that improves on P3 in 2 main ways:</p>
+<ul>
+<li>The library user has tight control over the parsing, allowing better real-world performance than P3.</li>
+<li>Various extensions are supported that allow to go beyond context-free grammars. For example, indentation-sensitive parsing is possible, based on allowing infinitely-many nonterminals in the grammar.</li>
+</ul>
+<p>The downside is that the interface to P4 is more complicated than that for P3.</p></li>
+</ul>
+<p>Older links are:</p>
+<ul>
+<li>P3: New versions of P3 are now available from github at <a href="https://github.com/tomjridge/p3" class="uri">https://github.com/tomjridge/p3</a>. At the moment the documentation is on the github wiki for P3 at <a href="https://github.com/tomjridge/p3/wiki/P3" class="uri">https://github.com/tomjridge/p3/wiki/P3</a>.</li>
+</ul>
+<p>The best documentation for P3 internals is the extended version of the following paper: Tom Ridge. Simple, efficient, sound and complete combinator parsing for all context-free grammars, using an oracle. In Proceedings of SLE 2014. <a href="resources/doc/ridge14sle.pdf">ridge14sle.pdf</a> <a href="resources/doc/ridge14sle_extended.pdf">extended version</a>.</p>
+<ul>
+<li><p>E3 is available from github at <a href="https://github.com/tomjridge/e3" class="uri">https://github.com/tomjridge/e3</a>. The <a href="https://github.com/tomjridge/e3/blob/master/src/e3_examples.ml">examples</a> should give some guidance on usage.</p></li>
+<li><p>P4 is available from github at <a href="https://github.com/tomjridge/p4" class="uri">https://github.com/tomjridge/p4</a>, but there is no documentation at the moment. It was a version of P3 with support for dynamically generated grammars. For example, you could parse a grammar of the form <code>G_n -&gt; &lt;the number n&gt; | &lt;the number n&gt; G_{n+1}</code>:</p></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ocaml"><code class="sourceCode ocaml"><a class="sourceLine" id="cb1-1" title="1"><span class="co">(* _G 1 parses &quot;1&quot;, or &quot;1&quot; followed by _G 2; in general, _G n parses</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co">   the number n, optionally followed by _G (n+1); there are an infinite</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co">   number of nonterminals (_G n) generated lazily on demand *)</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">let</span> _G = <span class="dt">ref</span> (<span class="kw">fun</span> n -&gt; <span class="dt">failwith</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">let</span> _ = _G := <span class="kw">fun</span> n -&gt; </a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">let</span> an = a (<span class="dt">string_of_int</span> n) <span class="kw">in</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="kw">let</span> alts = <span class="kw">lazy</span>(alts[</a>
+<a class="sourceLine" id="cb1-10" title="10">    (rhs an) &gt;&gt; (<span class="kw">fun</span> s -&gt; c s);</a>
+<a class="sourceLine" id="cb1-11" title="11">    (an &gt;-- (!_G (n+<span class="dv">1</span>))) &gt;&gt; (<span class="kw">fun</span> (x,y) -&gt; (c x)^y)])</a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="kw">in</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  mkntparser_lazy (mk_pre_parser ()) alts</a></code></pre></div>
+<ul>
+<li><code>P5_scala</code> is a version of P4 for Scala, available at <a href="https://github.com/tomjridge/p5_scala" class="uri">https://github.com/tomjridge/p5_scala</a>. Currently not in a very polished state. Mostly useful for me to try out Scala.</li>
+</ul>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2018-06-14_typed_parsing_dsl.html'>2018-06-14 A typed DSL for parsing</a></li>
+<li><a href='2018-05-22_first_python_program_earley.html'>2018-05-22 First Python program: an Earley parser!</a></li>
+<li><a href='2017-11-14_tjr_simple_earley.html'>2017-11-14 New OCaml parsing algorithm: tjr_simple_earley</a></li>
+<li><a href='2017-09-17_p0_and_tjr_csv.html'>2017-09-17 Two new OCaml libraries: P0 and tjr-csv</a></li>
+<li><a href='2016-02-19_tree-structured_text.html'>2016-02-19 Tree-structured text</a></li>
+<li><a href='2016-02-09_simple_implementation_of_an_earley-like_parsing_algorithm.html'>2016-02-09 Simple implementation of an Earley-like parsing algorithm</a></li>
+<li><a href='2015-06-26_p5_scala_parsing_library.html'>2015-06-26 P5 scala parsing library</a></li>
+<li><a href='2014-12-19_parsing_the_imap_protocol.html'>2014-12-19 Parsing the IMAP protocol</a></li>
+<li><a href='2014-12-04_parsing_examples.html'>2014-12-04 Parsing examples</a></li>
+<li><a href='2014-11-21_talk_on_parsing_at_the_university_of_sussex.html'>2014-11-21 Talk on parsing at the University of Sussex</a></li>
+<li><a href='2014-09-26_p1_combinator_parsing_library_for_ocaml.html'>2014-09-26 P1 combinator parsing library for OCaml</a></li>
+<li><a href='2014-09-26_e3_earley_parser_library_for_ocaml.html'>2014-09-26 E3 earley parser library for OCaml</a></li>
+<li><a href='2014-09-18_sle_2014_conference__and_parsing_at_sle_workshop__slides.html'>2014-09-18 SLE 2014 conference, and Parsing at SLE workshop, slides</a></li>
+<li><a href='2014-09-07_icfp_2014__ocaml_workshop__slides_and_video.html'>2014-09-07 ICFP 2014, OCaml workshop, slides and video</a></li>
+<li><a href='2014-07-11_p3_paper_accepted_for_sle_2014.html'>2014-07-11 P3 paper accepted for SLE 2014</a></li>
+<li><a href='2014-04-15_new_release_of_p3_code_on_github.html'>2014-04-15 New release of P3 code on github</a></li>
+<li><a href='2014-03-02_new_release_of_p3_code_on_github.html'>2014-03-02 New release of P3 code on github</a></li>
+<li><a href='2013-12-16_new_release_of_p3_code_on_github.html'>2013-12-16 New release of P3 code on github</a></li>
+<li><a href='2013-12-03_implementing_algorithms_efficiently.html'>2013-12-03 Implementing algorithms efficiently</a></li>
+<li><a href='2013-11-08_talk_on_parsing_and_p3_given_at_cambridge.html'>2013-11-08 Talk on parsing and P3 given at Cambridge</a></li>
+<li><a href='2011-12-01_verified_parsing.html'>2011-12-01 Verified parsing</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

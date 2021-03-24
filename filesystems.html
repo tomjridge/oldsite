@@ -1,0 +1,148 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Filesystems</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  
+  Categories: <a href='category_filesystems.html'>filesystems</a></br>
+  <br/>
+
+  <h1 id="filesystems">Filesystems</h1>
+<p>With others, I am working on formally specifying and verifying filesystems (eg SibylFS). I am also working on a verified filesystem implementation called “ImpFS”.</p>
+<h2 id="impfs">ImpFS</h2>
+<p>ImpFS is a new filesystem based on B-trees and persistent logs. The main “management” page (with links to all the subproject etc) is here: <a href="https://tomjridge.github.io/ocamldocs/" class="uri">https://tomjridge.github.io/ocamldocs/</a></p>
+<p>Some example components:</p>
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Title</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tjr_btree</td>
+<td>tjr_btree is a Copy-on-Write and mutate-in-place implementation of a B-tree-like on-disk datastructure.</td>
+</tr>
+<tr class="even">
+<td>tjr_kv</td>
+<td>tjr_kv is a key-value store for OCaml</td>
+</tr>
+<tr class="odd">
+<td>mini-fs</td>
+<td>Frontend filesystem components, including FUSE bindings, networking etc.</td>
+</tr>
+<tr class="even">
+<td>tjr_impfs</td>
+<td>The ImpFS filesystem</td>
+</tr>
+</tbody>
+</table>
+<p>“The ImpFS filesystem”, a talk for OCaml’20, part of ICFP’20:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AQ3BLdi4mhI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p>A video showing the current state of ImpFS:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q6dCu2tlaiw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<h2 id="recent-presentations-and-posters">Recent presentations and posters</h2>
+<ul>
+<li>A key-value store for OCaml, presented at ML’19, colocated with ICFP’19. See “related links” below for article and slides.</li>
+<li>I discussed ImpFS at a recent VeTSS meeting. The related poster is reproduced below.</li>
+</ul>
+<p><img style='width:60em' src='impfs_poster.png'></img></p>
+<h2 id="older-work-sibylfs">Older work: SibylFS</h2>
+<p>SibylFS is a formal model of POSIX-like and real-world filesystems, and simultaneously a test oracle which can be used to check real-world traces of filesystem behaviour. The main page for SibylFS is <a href="./sibylfs.html">here</a>.</p>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2020-01-20_sqlite_assumptions.html'>2020-01-20 SQLite assumptions, or how to corrupt an SQLite database</a></li>
+<li><a href='2019-12-18_vetss_annual_summary.html'>2019-12-18 VeTSS annual summary</a></li>
+<li><a href='2019-08-30_btree_performance.html'>2019-08-30 B-tree random write performance</a></li>
+<li><a href='2019-08-21_ml_workshop_kv_store_for_ocaml.html'>2019-08-21 ML'19 Workshop at ICFP: A key-value store for OCaml</a></li>
+<li><a href='2018-05-30_new_fs_motivation.html'>2018-05-30 Potential improvements in filesystem performance</a></li>
+<li><a href='2017-09-06_ocaml_workshop.html'>2017-09-06 OCaml workshop talk: A B-tree library for OCaml</a></li>
+<li><a href='2017-05-30_ocaml_workshop_submission.html'>2017-05-30 OCaml workshop submission: A B-tree library for OCaml</a></li>
+<li><a href='2017-05-13_interesting_ext4_alloc.html'>2017-06-13 Interesting article on ext4 free space allocation</a></li>
+<li><a href='2017-03-16_tjr_btree.html'>2017-03-16 tjr-btree: a CoW B-tree library in OCaml</a></li>
+<li><a href='2016-05-27_visit_to_cambridge__for_rems_workshop.html'>2016-05-27 Visit to Cambridge, for REMS workshop</a></li>
+<li><a href='2016-01-27_talk_at_york_university.html'>2016-01-27 Talk at York University</a></li>
+<li><a href='2015-10-05_sibylfs_presentation_at_sosp_15.html'>2015-10-05 SibylFS presentation at SOSP'15</a></li>
+<li><a href='2015-09-28_sibylfs_sosp_poster.html'>2015-09-28 SibylFS SOSP poster</a></li>
+<li><a href='2015-09-21_sibylfs_presentation_to_industrial_advisory_board.html'>2015-09-21 SibylFS presentation to Industrial Advisory Board</a></li>
+<li><a href='2015-06-28_sosp_2015_paper_acceptance_for_sibylfs.html'>2015-06-28 SOSP 2015 paper acceptance for SibylFS</a></li>
+<li><a href='2015-04-21_rems_cambridge_talk_on_sibylfs.html'>2015-04-21 REMS Cambridge talk on SibylFS</a></li>
+<li><a href='2013-11-13_engineer_position.html'>2013-11-13 Engineer position</a></li>
+<li><a href='2013-04-01_phd_position_funded_by_microsoft_research.html'>2013-04-01 PhD position funded by Microsoft Research</a></li>
+<li><a href='2013-02-01_epsrc_grant_funded.html'>2013-02-01 EPSRC grant funded</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

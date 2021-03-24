@@ -1,0 +1,102 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Working with the nix package manager: OCaml, Isabelle and Lem</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  Date: 2015-06-22<br/>
+  Categories: <a href='category_misc.html'>misc</a></br>
+  <br/>
+
+  <!-- 
+{"date":"2015-06-22","title":"Working with the nix package manager: OCaml, Isabelle and Lem","id":"id:2015-06-22","time":"2015-06-22","cats":["misc"]} 
+-->
+<h1 id="working-with-the-nix-package-manager-ocaml-isabelle-and-lem">Working with the nix package manager: OCaml, Isabelle and Lem</h1>
+<p>Recently I was packaging various pieces of code using the nix package manager <a href="https://nixos.org/nix/" class="uri">https://nixos.org/nix/</a>.</p>
+<p>There is already a package for Isabelle. However, I had to modify this along the lines of: <a href="https://github.com/tomjridge/ocaml_btree/tree/master/.nix/isabelle" class="uri">https://github.com/tomjridge/ocaml_btree/tree/master/.nix/isabelle</a>.</p>
+<p>There is an example package for lem here: <a href="https://github.com/tomjridge/ocaml_btree/tree/master/.nix/lem" class="uri">https://github.com/tomjridge/ocaml_btree/tree/master/.nix/lem</a></p>
+<p>The main problem I found is that it seems very difficult to get Isabelle to reuse heaps between packages. The eventual path I chose involves dropping into a nix-shell, and building the heaps in ~/.isabelle, rather than trying to reuse e.g. system heaps, or heaps from other packages. I assume that Isabelle somehow won't allow heap images to be reused across environments (perhaps there are hardcoded paths in heap images or something).</p>
+<p>Anyway, to see how this all hangs together, try making the above ocaml_btree project following the README.md: <a href="https://github.com/tomjridge/ocaml_btree" class="uri">https://github.com/tomjridge/ocaml_btree</a></p>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2018_12_05_congratulations_andrea.html'>2018-12-05 Congratulations to Andrea Giugliano!</a></li>
+<li><a href='2018-11-05_what_has_gone_wrong_with_universities.html'>2018-11-05 What has gone wrong with our universities?</a></li>
+<li><a href='2018-07-19_state_of_computing.html'>2018-07-19 The state of computing in 2018</a></li>
+<li><a href='2017-05-15_gransden_viva.html'>2017-05-15 PhD viva: congratulations to Thomas Gransden</a></li>
+<li><a href='2017-01-23_morrison_viva.html'>2017-01-23 Daniel Morrison PhD</a></li>
+<li><a href='2016-10-20_the_tree_of_life__film_.html'>2016-10-20 The Tree of Life (film)</a></li>
+<li><a href='2016-10-12_outreach_talk_at_uppingham_school.html'>2016-10-12 Outreach talk at Uppingham School</a></li>
+<li><a href='2016-06-05_do_not_buy_tp-link_products.html'>2016-06-05 Do not buy TP-Link products</a></li>
+<li><a href='2016-05-11_the_meaning_of_ielts_6.0.html'>2016-05-11 The meaning of IELTS 6.0</a></li>
+<li><a href='2015-09-11_richard_hamming_1968_turing_award_lecture_quote.html'>2015-09-11 Richard Hamming 1968 Turing Award lecture quote</a></li>
+<li><a href='2015-06-22_working_with_the_nix_package_manager__ocaml__isabelle_and_lem.html'>2015-06-22 Working with the nix package manager: OCaml, Isabelle and Lem</a></li>
+<li><a href='2015-06-17_j._m._coetzee_novel__youth.html'>2015-06-17 J. M. Coetzee novel, Youth</a></li>
+<li><a href='2015-01-23_ocaml_dependency_graph_via_graphviz_and_dot_file.html'>2015-01-23 OCaml dependency graph via graphviz and dot file</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

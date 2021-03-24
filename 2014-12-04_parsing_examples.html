@@ -1,0 +1,120 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Parsing examples</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  Date: 2014-12-04<br/>
+  Categories: <a href='category_parsing.html'>parsing</a></br>
+  <br/>
+
+  <!-- 
+{"date":"2014-12-04","title":"Parsing examples","id":"id:2014-12-04","time":"2014-12-04","cats":["parsing"]} 
+-->
+<h1 id="parsing-examples">Parsing examples</h1>
+<p>My work on P1, E3, P3 and P4 was motivated in part by a desire to have simple tools that I could use in other areas of research. These tools are mostly source-to-source translators. For example, in the past I have had various ad-hoc tools to translate OCaml to LaTeX, or OCaml to HOL, HOL to Lem, Lem to OCaml etc.</p>
+<p>The idea is to start making these tools maintainable and not one-off efforts to be used for a particular task then thrown away.</p>
+<p>Previous versions of P1 etc have not been engineered well enough to make the resulting tools maintainable or usable. I am hoping to change that by investing more engineering effort into P1 etc.</p>
+<p>So I have started a new repository on github <a href="https://github.com/tomjridge/example_grammars/" class="uri">https://github.com/tomjridge/example_grammars/</a> which contains grammars and grammar-based tools that I use.</p>
+<p>To reduce grammar maintenance, I have added additional functionality to P1 etc:</p>
+<ul>
+<li><p>Actions now use positional variables (<code>x1,x2,...</code>) rather than requiring a <code>fun (x,(y,...)) -&gt;</code> nested tuple pattern. This makes maintenance easier and also allows p1 and p4 to use the same grammar files (p1 has a right-associative sequential combinator, while p4 has a left-associative seq. comb.). For example, the file <a href="https://github.com/tomjridge/example_grammars/blob/master/src/eee.p1" class="uri">https://github.com/tomjridge/example_grammars/blob/master/src/eee.p1</a> uses <code>fun ...</code> actions, whereas the file <a href="https://github.com/tomjridge/example_grammars/blob/master/src/eee2.p1x" class="uri">https://github.com/tomjridge/example_grammars/blob/master/src/eee2.p1x</a> uses positional variables.</p></li>
+<li><p>Explicitly-named symbols in actions are supported. In the following excerpt, the variables in the second alternative are <code>w1,t,w2</code> rather than <code>x1,x2,...</code>.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode ocaml"><code class="sourceCode ocaml">OCAMLTYPEXPR -&gt; <span class="st">&quot;&#39;&quot;</span> ?ident?            {{ Tex.tyvar ([x1;x2]|&gt;ss_concat|&gt;c) }}
+  | <span class="st">&quot;(&quot;</span> w1=?w? t=TYPEXPR w2=?w? <span class="st">&quot;)&quot;</span>       {{ <span class="st">&quot;(&quot;</span>^(Tex.w w1)^t^(Tex.w w2)^<span class="st">&quot;)&quot;</span> }}</code></pre></div>
+<ul>
+<li>Multiple actions are now supported. For example, to map to tex you might have an action <code>{tex{...}}</code>, whilst to map to markdown, you might have an action <code>{md{...}}</code>. There is an example using multiple actions here: <a href="https://github.com/tomjridge/example_grammars/blob/master/src/eee3.p1x.acts" class="uri">https://github.com/tomjridge/example_grammars/blob/master/src/eee3.p1x.acts</a></li>
+</ul>
+<p>As a (somewhat largish) example, a grammar for a Lem/OCaml language is <a href="https://github.com/tomjridge/example_grammars/blob/master/src/ocaml.cppo" class="uri">https://github.com/tomjridge/example_grammars/blob/master/src/ocaml.cppo</a> Note that this can be used with p1 (for correctness/simplcity) and p4 (for speed). This is possible because p1 and p4 have essentially the same interface. At the moment there is only a single set of actions (to map to LaTeX). I am currently using this to produce typeset Lem code for inclusion in a paper.</p>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2018-06-14_typed_parsing_dsl.html'>2018-06-14 A typed DSL for parsing</a></li>
+<li><a href='2018-05-22_first_python_program_earley.html'>2018-05-22 First Python program: an Earley parser!</a></li>
+<li><a href='2017-11-14_tjr_simple_earley.html'>2017-11-14 New OCaml parsing algorithm: tjr_simple_earley</a></li>
+<li><a href='2017-09-17_p0_and_tjr_csv.html'>2017-09-17 Two new OCaml libraries: P0 and tjr-csv</a></li>
+<li><a href='2016-02-19_tree-structured_text.html'>2016-02-19 Tree-structured text</a></li>
+<li><a href='2016-02-09_simple_implementation_of_an_earley-like_parsing_algorithm.html'>2016-02-09 Simple implementation of an Earley-like parsing algorithm</a></li>
+<li><a href='2015-06-26_p5_scala_parsing_library.html'>2015-06-26 P5 scala parsing library</a></li>
+<li><a href='2014-12-19_parsing_the_imap_protocol.html'>2014-12-19 Parsing the IMAP protocol</a></li>
+<li><a href='2014-12-04_parsing_examples.html'>2014-12-04 Parsing examples</a></li>
+<li><a href='2014-11-21_talk_on_parsing_at_the_university_of_sussex.html'>2014-11-21 Talk on parsing at the University of Sussex</a></li>
+<li><a href='2014-09-26_p1_combinator_parsing_library_for_ocaml.html'>2014-09-26 P1 combinator parsing library for OCaml</a></li>
+<li><a href='2014-09-26_e3_earley_parser_library_for_ocaml.html'>2014-09-26 E3 earley parser library for OCaml</a></li>
+<li><a href='2014-09-18_sle_2014_conference__and_parsing_at_sle_workshop__slides.html'>2014-09-18 SLE 2014 conference, and Parsing at SLE workshop, slides</a></li>
+<li><a href='2014-09-07_icfp_2014__ocaml_workshop__slides_and_video.html'>2014-09-07 ICFP 2014, OCaml workshop, slides and video</a></li>
+<li><a href='2014-07-11_p3_paper_accepted_for_sle_2014.html'>2014-07-11 P3 paper accepted for SLE 2014</a></li>
+<li><a href='2014-04-15_new_release_of_p3_code_on_github.html'>2014-04-15 New release of P3 code on github</a></li>
+<li><a href='2014-03-02_new_release_of_p3_code_on_github.html'>2014-03-02 New release of P3 code on github</a></li>
+<li><a href='2013-12-16_new_release_of_p3_code_on_github.html'>2013-12-16 New release of P3 code on github</a></li>
+<li><a href='2013-12-03_implementing_algorithms_efficiently.html'>2013-12-03 Implementing algorithms efficiently</a></li>
+<li><a href='2013-11-08_talk_on_parsing_and_p3_given_at_cambridge.html'>2013-11-08 Talk on parsing and P3 given at Cambridge</a></li>
+<li><a href='2011-12-01_verified_parsing.html'>2011-12-01 Verified parsing</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

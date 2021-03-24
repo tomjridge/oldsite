@@ -1,0 +1,122 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>SQLite assumptions, or how to corrupt an SQLite database</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  Date: 2020-01-20<br/>
+  Categories: <a href='category_filesystems.html'>filesystems</a>; <a href='category_research.html'>research</a></br>
+  <br/>
+
+  
+
+<h1 id="SQLite-assumptions-or-how-to-corrupt-an-SQLite-database">SQLite assumptions, or how to corrupt an SQLite database</h1>
+
+<p>An interesting post on Hacker News reminded me of this very informative page about how SQLite can go wrong:</p>
+<p><a href='https://www.sqlite.org/howtocorrupt.html'>https://www.sqlite.org/howtocorrupt.html</a></p>
+<p>My favourites:</p>
+<ul><li>Continuing to use a file descriptor after it has been closed (the
+ user process interferes with the database process by writing to an
+ fd it had previously closed, which was then in use by the db)</li><li>Filesystems with broken or missing lock implementations
+ (unfortunately they are too coy about which filesystems these
+ are... likely all of them)</li><li>Failure to sync (including &quot;Disk drives that do not honor sync
+ requests&quot;... &quot;Unfortunately, most consumer-grade mass storage
+ devices lie about syncing.&quot;)</li><li>Non-powersafe flash memory controllers</li><li>The whole &quot;Bugs in SQLite&quot; section</li></ul>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2020-05-01_phd_viva_john_whitington.html'>2020-05-01 John Whitington PhD viva</a></li>
+<li><a href='2020-02-05_phd_viva_chair.html'>2020-02-05 On the need for PhD viva chairs</a></li>
+<li><a href='2020-01-20_sqlite_assumptions.html'>2020-01-20 SQLite assumptions, or how to corrupt an SQLite database</a></li>
+<li><a href='2019-12-18_vetss_annual_summary.html'>2019-12-18 VeTSS annual summary</a></li>
+<li><a href='2019-08-30_btree_performance.html'>2019-08-30 B-tree random write performance</a></li>
+<li><a href='2019-08-21_ml_workshop_kv_store_for_ocaml.html'>2019-08-21 ML'19 Workshop at ICFP: A key-value store for OCaml</a></li>
+<li><a href='2018-07-02_funded_phd_places.html'>2018-07-02 Funded PhD places</a></li>
+<li><a href='2018-06-14_typed_parsing_dsl.html'>2018-06-14 A typed DSL for parsing</a></li>
+<li><a href='2018-05-30_new_fs_motivation.html'>2018-05-30 Potential improvements in filesystem performance</a></li>
+<li><a href='2018-05-22_first_python_program_earley.html'>2018-05-22 First Python program: an Earley parser!</a></li>
+<li><a href='2018-02-01_path_resolution.html'>2018-02-01 New OCaml library: path resolution</a></li>
+<li><a href='2017-09-06_ocaml_workshop.html'>2017-09-06 OCaml workshop talk: A B-tree library for OCaml</a></li>
+<li><a href='2017-09-06_icfp_most_influential.html'>2017-09-06 ICFP most influential paper from 10 years ago</a></li>
+<li><a href='2017-05-30_ocaml_workshop_submission.html'>2017-05-30 OCaml workshop submission: A B-tree library for OCaml</a></li>
+<li><a href='2017-05-13_interesting_ext4_alloc.html'>2017-06-13 Interesting article on ext4 free space allocation</a></li>
+<li><a href='2017-03-16_tjr_btree.html'>2017-03-16 tjr-btree: a CoW B-tree library in OCaml</a></li>
+<li><a href='2016-05-27_visit_to_cambridge__for_rems_workshop.html'>2016-05-27 Visit to Cambridge, for REMS workshop</a></li>
+<li><a href='2016-01-27_talk_at_york_university.html'>2016-01-27 Talk at York University</a></li>
+<li><a href='2015-10-05_sibylfs_presentation_at_sosp_15.html'>2015-10-05 SibylFS presentation at SOSP'15</a></li>
+<li><a href='2015-09-28_sibylfs_sosp_poster.html'>2015-09-28 SibylFS SOSP poster</a></li>
+<li><a href='2015-09-21_sibylfs_presentation_to_industrial_advisory_board.html'>2015-09-21 SibylFS presentation to Industrial Advisory Board</a></li>
+<li><a href='2015-06-28_sosp_2015_paper_acceptance_for_sibylfs.html'>2015-06-28 SOSP 2015 paper acceptance for SibylFS</a></li>
+<li><a href='2015-04-27_why_operational_models_.html'>2015-04-27 Why operational models?</a></li>
+<li><a href='2015-04-21_rems_cambridge_talk_on_sibylfs.html'>2015-04-21 REMS Cambridge talk on SibylFS</a></li>
+<li><a href='2014-11-26_isabelle_on_64bit_ubuntu_with_32bit_libraries.html'>2014-11-26 Isabelle on 64bit ubuntu with 32bit libraries</a></li>
+<li><a href='2013-11-13_engineer_position.html'>2013-11-13 Engineer position</a></li>
+<li><a href='2013-04-01_phd_position_funded_by_microsoft_research.html'>2013-04-01 PhD position funded by Microsoft Research</a></li>
+<li><a href='2013-02-01_epsrc_grant_funded.html'>2013-02-01 EPSRC grant funded</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

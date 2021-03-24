@@ -1,0 +1,149 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>First Python program: an Earley parser!</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  Date: 2018-05-22<br/>
+  Categories: <a href='category_research.html'>research</a>; <a href='category_programming.html'>programming</a>; <a href='category_parsing.html'>parsing</a></br>
+  <br/>
+
+  
+
+<h1 id="First-Python-program-an-Earley-parser">First Python program: an Earley parser!</h1>
+
+<p>Next semester we are introducing Python as the first language we teach
+to our students. To learn Python I read a few books, then started to
+write some code. My first piece of code involved translating a piece
+of OCaml (<a href='https://github.com/tomjridge/tjr_simple_earley'>https://github.com/tomjridge/tjr_simple_earley</a>) to Python.</p>
+<p>The result is <a href='https://github.com/tomjridge/tjr_python_earley_parser'>https://github.com/tomjridge/tjr_python_earley_parser</a></p>
+<p>From the README.md:</p>
+<p>This code is based on the OCaml implementation
+<a href='https://github.com/tomjridge/tjr_simple_earley'>https://github.com/tomjridge/tjr_simple_earley</a> but adapted to
+Python. Documentation for the algorithm itself (not this
+implementation in Python) can be found at that link.</p>
+<p>The OCaml code is much faster (as should be expected).</p>
+<p>Even so, the Python code is not slow. For example, for an input
+&quot;1&quot;*100, and a grammar <code>E -&gt; E E E | &quot;1&quot; | eps</code>, parsing takes about
+.75 of a second. This is notable because most other Earley parsers
+tend to fall over when given a grammar like this.</p>
+<p>This is my first piece of Python code, and I was pleasantly surprised:</p>
+<ul><li>pycharm is a nice environment for programming Python</li><li>the checks that pycharm does (&quot;inspect code&quot;) are useful</li><li>I didn&#39;t miss types too much (of course, I am only translating from
+ OCaml, rather than developing the algorithm from scratch... types
+ would likely be much more useful when developing the algorithm).</li><li>Python has nice support for sets, maps, and algebraic datatypes
+ (namedtuples).</li><li>Imperative/mutable programming actually makes the code nicer
+ compared to the state-passing style used for the OCaml
+ implementation</li></ul>
+
+<p>TODO:</p>
+<ul><li>compare performance with other Python Earley parsers, such as
+ <a href='https://github.com/lark-parser/lark'>https://github.com/lark-parser/lark</a></li></ul>
+
+<p><hr/><strong>UPDATE</strong></p>
+<p>Inspired by imperative programming (!) I attempted to replicate the Python experience in OCaml, using a monad. The result is:</p>
+<p><img src='./monadic_step_at_k.png' alt='' /></p>
+<p>This actually is pretty readable, and close to the concision that Python allows.</p>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2020-05-01_phd_viva_john_whitington.html'>2020-05-01 John Whitington PhD viva</a></li>
+<li><a href='2020-02-05_phd_viva_chair.html'>2020-02-05 On the need for PhD viva chairs</a></li>
+<li><a href='2020-01-20_sqlite_assumptions.html'>2020-01-20 SQLite assumptions, or how to corrupt an SQLite database</a></li>
+<li><a href='2019-12-18_vetss_annual_summary.html'>2019-12-18 VeTSS annual summary</a></li>
+<li><a href='2019-08-30_btree_performance.html'>2019-08-30 B-tree random write performance</a></li>
+<li><a href='2019-08-21_ml_workshop_kv_store_for_ocaml.html'>2019-08-21 ML'19 Workshop at ICFP: A key-value store for OCaml</a></li>
+<li><a href='2018-07-02_funded_phd_places.html'>2018-07-02 Funded PhD places</a></li>
+<li><a href='2018-06-14_typed_parsing_dsl.html'>2018-06-14 A typed DSL for parsing</a></li>
+<li><a href='2018-05-30_new_fs_motivation.html'>2018-05-30 Potential improvements in filesystem performance</a></li>
+<li><a href='2018-05-22_first_python_program_earley.html'>2018-05-22 First Python program: an Earley parser!</a></li>
+<li><a href='2018-02-01_path_resolution.html'>2018-02-01 New OCaml library: path resolution</a></li>
+<li><a href='2017-11-14_tjr_simple_earley.html'>2017-11-14 New OCaml parsing algorithm: tjr_simple_earley</a></li>
+<li><a href='2017-09-17_p0_and_tjr_csv.html'>2017-09-17 Two new OCaml libraries: P0 and tjr-csv</a></li>
+<li><a href='2017-09-06_icfp_most_influential.html'>2017-09-06 ICFP most influential paper from 10 years ago</a></li>
+<li><a href='2017-03-16_tjr_btree.html'>2017-03-16 tjr-btree: a CoW B-tree library in OCaml</a></li>
+<li><a href='2016-02-19_tree-structured_text.html'>2016-02-19 Tree-structured text</a></li>
+<li><a href='2016-02-09_simple_implementation_of_an_earley-like_parsing_algorithm.html'>2016-02-09 Simple implementation of an Earley-like parsing algorithm</a></li>
+<li><a href='2015-06-26_p5_scala_parsing_library.html'>2015-06-26 P5 scala parsing library</a></li>
+<li><a href='2015-04-27_why_operational_models_.html'>2015-04-27 Why operational models?</a></li>
+<li><a href='2014-12-19_parsing_the_imap_protocol.html'>2014-12-19 Parsing the IMAP protocol</a></li>
+<li><a href='2014-12-04_parsing_examples.html'>2014-12-04 Parsing examples</a></li>
+<li><a href='2014-11-26_isabelle_on_64bit_ubuntu_with_32bit_libraries.html'>2014-11-26 Isabelle on 64bit ubuntu with 32bit libraries</a></li>
+<li><a href='2014-11-21_talk_on_parsing_at_the_university_of_sussex.html'>2014-11-21 Talk on parsing at the University of Sussex</a></li>
+<li><a href='2014-09-26_p1_combinator_parsing_library_for_ocaml.html'>2014-09-26 P1 combinator parsing library for OCaml</a></li>
+<li><a href='2014-09-26_e3_earley_parser_library_for_ocaml.html'>2014-09-26 E3 earley parser library for OCaml</a></li>
+<li><a href='2014-09-18_sle_2014_conference__and_parsing_at_sle_workshop__slides.html'>2014-09-18 SLE 2014 conference, and Parsing at SLE workshop, slides</a></li>
+<li><a href='2014-09-07_icfp_2014__ocaml_workshop__slides_and_video.html'>2014-09-07 ICFP 2014, OCaml workshop, slides and video</a></li>
+<li><a href='2014-07-11_p3_paper_accepted_for_sle_2014.html'>2014-07-11 P3 paper accepted for SLE 2014</a></li>
+<li><a href='2014-04-15_new_release_of_p3_code_on_github.html'>2014-04-15 New release of P3 code on github</a></li>
+<li><a href='2014-03-02_new_release_of_p3_code_on_github.html'>2014-03-02 New release of P3 code on github</a></li>
+<li><a href='2013-12-16_new_release_of_p3_code_on_github.html'>2013-12-16 New release of P3 code on github</a></li>
+<li><a href='2013-12-03_implementing_algorithms_efficiently.html'>2013-12-03 Implementing algorithms efficiently</a></li>
+<li><a href='2013-11-08_talk_on_parsing_and_p3_given_at_cambridge.html'>2013-11-08 Talk on parsing and P3 given at Cambridge</a></li>
+<li><a href='2011-12-01_verified_parsing.html'>2011-12-01 Verified parsing</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+
+<html>
+
+<!-- header ---------------------------------------- -->
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="all,follow" />
+
+  <meta name="author" content="Tom Ridge" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Potential improvements in filesystem performance</title>
+  <link rel="stylesheet" type="text/css" href="tjr_style.css" />
+
+
+<!-- google tracking ---------------------------------------- -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#siteSpeedSampleRate
+  ga('create', 'UA-34388398-1', {'siteSpeedSampleRate': 100});
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+<body>
+<div class='main_body_div'>
+
+<!-- navbar ---------------------------------------- -->
+
+<div class='navbar'>
+  <ul>
+    <li><a href='index.html'>Home</a></li>
+    <li><a href='blog.html'>Blog</a></li>
+    <li><a href='category_news.html'>News</a></li>
+    <li><a href='filesystems.html'>Filesystems</a></li>
+    <li><a href='parsing.html'>Parsing</a></li>
+    <li><a href='phd_students.html'>PhD places</a></li>
+    <li><a href='publications.html'>Publications</a></li>
+    <li><a href='research.html'>Research</a></li>
+    <li><a href='software.html'>Software</a></li>
+    <li><a href='teaching.html'>Teaching</a></li>
+  </ul>
+</div>
+
+<!-- main post ---------------------------------------- -->
+<div>
+  <br/>
+  <!-- may not be present -->
+  Date: 2018-05-30<br/>
+  Categories: <a href='category_research.html'>research</a>; <a href='category_filesystems.html'>filesystems</a></br>
+  <br/>
+
+  
+
+<h1 id="Potential-improvements-in-filesystem-performance">Potential improvements in filesystem performance</h1>
+
+<p>I am currently trying to build a new filesystem, provisionally called
+&quot;ImpFS&quot;. Some of the motivations are:</p>
+<ul><li>Provide a verified filesystem kernel, based on B-trees, to improve
+ reliability and make possible formal reasoning about FS behaviour.</li><li>Produce a filesystem library, so that new filesystems are easier to
+ construct out of components.</li><li>Provide a filesystem for MirageOS (a high-level unikernel operating
+ system).</li><li>Provide a widely used, formally verified operating system component.</li><li>Provide a filesystem with lots of &quot;interesting&quot; features (snapshots
+ etc).</li></ul>
+
+<p>One motivation that I haven&#39;t emphasized till now is to try to compete
+with -- and hopefully even surpass -- existing filesystems in terms of
+performance.</p>
+<p>A priori, this goal seems unlikely to be met when you consider that
+existing filesystems have had decades of work put into them, including
+significant tuning for underlying hardware etc. Why is it reasonable
+to suppose that we might be able to build something better?</p>
+<p>In this post, I want to try to draw out the reasons why I think this
+is possible. Even though I may not achieve the end result with ImpFS,
+the arguments themselves may be worth considering.</p>
+<h2 id="Existing-filesystem-landscape">Existing filesystem landscape</h2>
+
+<p>Hardware is very diverse. From phones down to the smallest embedded
+devices, there is a huge range of capabilities. For small devices, the
+typical choice of filesystem is exFAT / VFAT / MSDOS (i.e., Microsoft
+traditional filesystem) because it is simple to implement and doesn&#39;t
+require much resources. However, FAT has significant reliability
+problems, and other drawbacks (some of which are understandable given
+how old it is).</p>
+<p>For phones, Apple has recently developed APFS (to run on all its
+devices), and for Android the site
+<a href='https://www.all-things-android.com/content/understanding-android-file-hierarchy'>https://www.all-things-android.com/content/understanding-android-file-hierarchy</a>
+reports that phones run a variety of filesystems such as: exFAT, F2FS,
+JFFS2, YAFFS2, EXT4, MSDOS and VFAT.</p>
+<p>For servers, probably ZFS is the usual filesystem of choice (although
+other alternatives such as XFS are possible). Companies like NetApp
+have their own proprietary filesystems.</p>
+<p>It is worth stressing that developing a modern filesystem is a huge
+amount of effort. For example, BTRFS, the current next-gen Linux
+filesystem, has been under development for close to 10 years.</p>
+<h2 id="Reason-1-hardware-diversity-custom-filesystems">Reason 1: hardware diversity, custom filesystems</h2>
+
+<p>My work involves building a library of filesystem components. The idea
+is that these components can be assembled to produce the final
+filesystem. The components can be chosen to exactly match the hardware.</p>
+<p>For example, at the moment a desktop system might have a large HDD
+for data and a smaller SSD which holds the main OS and
+applications. These are typically mounted as two separate systems. On
+Linux it is possible (e.g. using technologies such as bcrypt) to use
+the SSD as a cache for the HDD. However, this configuration is
+rare. With the introduction of an even faster storage layer above SSD
+(NVRAM), a desktop may even have three types of persistent
+storage. And obviously the desire would be to use the NVRAM as a cache
+for the SSD which is in turn a cache for the HDD.</p>
+<p>Setting all this up using existing technologies is hard. The
+underlying reason is that the existing technologies are not intended
+to span such a diverse range of storage devices.</p>
+<p>Clearly, with a library filesystem, with separate components for
+caching etc., configuring such a setup might be easy. Thus, the
+library filesystem fits much better the diverse range of hardware that
+we see in systems today.</p>
+<p>As another example of hardware diversity, consider concurrency. Early
+storage devices accepted a single command at a time. Modern devices
+have queues of pending commands, and performance is best if those
+queues can be kept reasonably full. Existing filesystems, and
+intermediate kernel layers, may need to be radically re-engineered to
+take advantage of these low-level features. In contrast, the hope is
+that a filesystem library could be configured to take advantage of
+these fairly directly.</p>
+<p>Now consider the operating of flushing (via the <code>sync</code> command) data
+to disk. In the past, devices supported a single sync command that
+flushed all pending data to disk before returning (we leave aside
+questions of whether the devices actually implemented this
+correctly). However, this is clearly not optimal. Consider the
+scenario where one process is streaming a huge media file to disk and
+doesn&#39;t need to sync the data, and another process is writing a few
+bytes to record a transaction and does need to sync the data. If we
+only have a per-device sync command, then the second process may issue
+the sync and have to wait a very long time for all the media data to
+be flushed to disk.</p>
+<p>Currently, one can usually execute a sync command against a file or
+directory. However, exactly how this is translated to the lower levels
+is often unclear: it must depend on the sync capabilities of the
+underlying device, and also on the ability of the OS and filesystem to
+track data through the OS layers and relate it back to the high-level
+file that the user has synced.</p>
+<p>In this scenario, we need ways to specify more precisely which data
+needs to be put on disk. The transaction queues above offer one
+possibility: if there is a per-queue sync command, then the filesystem
+could potentially route each process&#39; data to a separate queue,
+allowing a database process to sync independently of a media-streaming
+process. However, this clearly involves quite complicated
+re-engineering.</p>
+<h2 id="Reason-2-end-to-end-design">Reason 2: end-to-end design</h2>
+
+<p>As outlined above, we need:</p>
+<ol><li><p>An API which allows the user to more precisely state what bits of
+data need to be flushed to disk.</p>
+</li><li><p>Some way for this information to be reliably translated to commands
+the low-level device can understand.</p>
+</li></ol>
+
+<p>In ImpFS, the components talk about objects (files, directories,
+symlinks, etc), and at all levels of the stack we keep track of the
+object id associated with data. Thus, when a user syncs a particular
+object (a file, a directory), at each layer we know which data has to
+be flushed down to the device, and which can be left e.g. in cache.</p>
+<p>We accurately track all the data dependencies as well, and only write
+the minimum data required. This is possible because of the very
+high-level view we take, and the fact that we have complete control
+over all layers, and do not have to reuse e.g. the Linux VFS or the
+Linux block layer. The disadvantage, of course, is that we have to
+write all these layers ourselves.</p>
+<h2 id="Reason-3-close-attention-to-minimizing-writes">Reason 3: close attention to minimizing writes</h2>
+
+<p>When a user issues a sync on a dirty object, at least one device write
+must occur. We have architected our system so that, as far as
+possible, this lower bound is actually achieved. This is possible by
+choosing a particular approach to persistence which we outline in the
+following section.</p>
+<h2 id="Reason-4-alternative-design-choices-no-log-no-BSD-soft-updates">Reason 4: alternative design choices (no log, no BSD soft updates)</h2>
+
+<p>Existing systems tend to use a transaction log (for journalling
+filesystems, see
+<a href='https://en.wikipedia.org/wiki/Journaling_file_system'>https://en.wikipedia.org/wiki/Journaling_file_system</a>), a
+log-structured filesystem approach
+(<a href='https://en.wikipedia.org/wiki/Log-structured_file_system'>https://en.wikipedia.org/wiki/Log-structured_file_system</a>), or
+techniques such as &quot;soft updates&quot;
+(<a href='https://en.wikipedia.org/wiki/Soft_updates'>https://en.wikipedia.org/wiki/Soft_updates</a>).</p>
+<p>Soft updates were an attempt to guarantee consistent on-disk metadata
+(not data) by closely examining the intermediate states that an FS
+passes through, and then making sure that a crash at any point did not
+leave the metadata in an inconsistent state. The approach is clearly
+complicated (you have to look at all intermediate states) and
+application to different filesystems is difficult (your reasoning is
+specialized to the operations of a particular filesystem). It seems
+this approach never made it beyond the BSD fast file system, and is
+now largely abandoned.</p>
+<p>An alternative approach, that most filesystems follow, is to first
+write changes into a transaction log, and then execute these changes
+against the disk itself. If operations are idempotent, then a crash at
+any point can be dealt with by replaying the log and re-executing the
+changes. The downside is that there is clearly the overhead of all the
+logging, compared to doing no logging at all. In fact, the logging is
+so costly and slow that most systems only log the metadata changes,
+not the data changes. This makes it hard to be sure what guarantees
+are provided by such a scheme (presumably only the weakest guarantee:
+that the on-disk structures are internally consistent... which says
+nothing about the actual values of the metadata or data at all).</p>
+<p>So on the one hand, logging/journalling is relatively well understood
+and generally applicable across lots of filesystems. On the other
+hand, it is so slow that most users turn it off (even for production
+databases). And alternatives, such as soft updates, have proven to be
+very complicated.</p>
+<p>For ImpFS, I chose to look at things in a different way. The result is
+a technique that is generally applicable, simple to understand, and
+which resembles logging. However, unlike logging, the cost is
+minimal. This relies on the whole filesystem being Copy-on-Write
+(CoW). In this scenario, updates to state are performed by swinging a
+root pointer. ImpFS uses a clever combination of logging and pointer
+swinging to ensure that all metadata <strong>and data</strong> is consistent and
+correct, without the overhead of a traditional journal.</p>
+<p>&quot;What is this fantastic technique???&quot; I hear you ask. That is a
+subject for another post!</p>
+
+
+</div>
+
+<!-- related articles ---------------------------------------- -->
+<div>
+
+  
+<hr/>
+
+Related posts: </br>
+
+<ul>
+<li><a href='2020-05-01_phd_viva_john_whitington.html'>2020-05-01 John Whitington PhD viva</a></li>
+<li><a href='2020-02-05_phd_viva_chair.html'>2020-02-05 On the need for PhD viva chairs</a></li>
+<li><a href='2020-01-20_sqlite_assumptions.html'>2020-01-20 SQLite assumptions, or how to corrupt an SQLite database</a></li>
+<li><a href='2019-12-18_vetss_annual_summary.html'>2019-12-18 VeTSS annual summary</a></li>
+<li><a href='2019-08-30_btree_performance.html'>2019-08-30 B-tree random write performance</a></li>
+<li><a href='2019-08-21_ml_workshop_kv_store_for_ocaml.html'>2019-08-21 ML'19 Workshop at ICFP: A key-value store for OCaml</a></li>
+<li><a href='2018-07-02_funded_phd_places.html'>2018-07-02 Funded PhD places</a></li>
+<li><a href='2018-06-14_typed_parsing_dsl.html'>2018-06-14 A typed DSL for parsing</a></li>
+<li><a href='2018-05-30_new_fs_motivation.html'>2018-05-30 Potential improvements in filesystem performance</a></li>
+<li><a href='2018-05-22_first_python_program_earley.html'>2018-05-22 First Python program: an Earley parser!</a></li>
+<li><a href='2018-02-01_path_resolution.html'>2018-02-01 New OCaml library: path resolution</a></li>
+<li><a href='2017-09-06_ocaml_workshop.html'>2017-09-06 OCaml workshop talk: A B-tree library for OCaml</a></li>
+<li><a href='2017-09-06_icfp_most_influential.html'>2017-09-06 ICFP most influential paper from 10 years ago</a></li>
+<li><a href='2017-05-30_ocaml_workshop_submission.html'>2017-05-30 OCaml workshop submission: A B-tree library for OCaml</a></li>
+<li><a href='2017-05-13_interesting_ext4_alloc.html'>2017-06-13 Interesting article on ext4 free space allocation</a></li>
+<li><a href='2017-03-16_tjr_btree.html'>2017-03-16 tjr-btree: a CoW B-tree library in OCaml</a></li>
+<li><a href='2016-05-27_visit_to_cambridge__for_rems_workshop.html'>2016-05-27 Visit to Cambridge, for REMS workshop</a></li>
+<li><a href='2016-01-27_talk_at_york_university.html'>2016-01-27 Talk at York University</a></li>
+<li><a href='2015-10-05_sibylfs_presentation_at_sosp_15.html'>2015-10-05 SibylFS presentation at SOSP'15</a></li>
+<li><a href='2015-09-28_sibylfs_sosp_poster.html'>2015-09-28 SibylFS SOSP poster</a></li>
+<li><a href='2015-09-21_sibylfs_presentation_to_industrial_advisory_board.html'>2015-09-21 SibylFS presentation to Industrial Advisory Board</a></li>
+<li><a href='2015-06-28_sosp_2015_paper_acceptance_for_sibylfs.html'>2015-06-28 SOSP 2015 paper acceptance for SibylFS</a></li>
+<li><a href='2015-04-27_why_operational_models_.html'>2015-04-27 Why operational models?</a></li>
+<li><a href='2015-04-21_rems_cambridge_talk_on_sibylfs.html'>2015-04-21 REMS Cambridge talk on SibylFS</a></li>
+<li><a href='2014-11-26_isabelle_on_64bit_ubuntu_with_32bit_libraries.html'>2014-11-26 Isabelle on 64bit ubuntu with 32bit libraries</a></li>
+<li><a href='2013-11-13_engineer_position.html'>2013-11-13 Engineer position</a></li>
+<li><a href='2013-04-01_phd_position_funded_by_microsoft_research.html'>2013-04-01 PhD position funded by Microsoft Research</a></li>
+<li><a href='2013-02-01_epsrc_grant_funded.html'>2013-02-01 EPSRC grant funded</a></li>
+</ul>
+
+
+</div>
+
+</div>
+</body>
+
+</html>
